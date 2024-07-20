@@ -1,19 +1,22 @@
-import { Sequelize } from 'sequelize';
+import { DataSource } from 'typeorm';
 import dotenv from 'dotenv';
+import { MODEL } from './../Model'
 
 dotenv.config();
 
-export const sequelize = new Sequelize({
-    dialect: process.env.DATABASE_TYPE as any,
-    database: process.env.DATABASE_NAME,
+export const dataSource = new DataSource({
+    type: process.env.DATABASE_TYPE as any,
+    host: process.env.DATABASE_HOST,
+    port: process.env.DATABASE_PORT as any,
     username: process.env.DATABASE_USERNAME,
     password: process.env.DATABASE_PASSWORD,
-    host: process.env.DATABASE_HOST
-});
+    database: process.env.DATABASE_NAME,
+    entities: MODEL,
+})
 
 export const isAuthenticated = async () => {
     try {
-        await sequelize.authenticate();
+        await dataSource.initialize();
         console.log('Connection has been established successfully.');
         return true;
     } catch (error) {
