@@ -1,6 +1,23 @@
-import pgp from  'pg-promise';
+import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const db = pgp(`${process.env.DATABASE_TYPE}://${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}` as any);
+export const sequelize = new Sequelize({
+    dialect: process.env.DATABASE_TYPE as any,
+    database: process.env.DATABASE_NAME,
+    username: process.env.DATABASE_USERNAME,
+    password: process.env.DATABASE_PASSWORD,
+    host: process.env.DATABASE_HOST
+});
+
+export const isAuthenticated = async () => {
+    try {
+        await sequelize.authenticate();
+        console.log('Connection has been established successfully.');
+        return true;
+    } catch (error) {
+        console.error('Unable to connect to the database:', error);
+        return false;
+    }
+}

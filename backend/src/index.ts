@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import helmet from 'helmet';
 import cors from 'cors';
 import routes from './Routes/v1/Route';
+import { isAuthenticated } from './Config/database';
 
 const app = express();
 
@@ -28,6 +29,11 @@ app.use(cors());
 // api routes
 app.use('/api', routes);
 
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+app.listen(port, async () => {
+  const isAuthenticatedValue = await isAuthenticated();
+  if(isAuthenticatedValue) {
+    console.log(`Server is running at http://localhost:${port}`);
+  } else {
+    console.log(`Connect to database failed.`);
+  }
 });
