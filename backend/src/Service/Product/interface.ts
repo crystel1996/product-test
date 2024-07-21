@@ -5,3 +5,11 @@ export interface ProductCreateInputInterface extends ProductValidationInputInter
 export interface ProductUpdateInputInterface extends ProductValidationInputInterface {
     id: number;
 }
+
+export interface ProductListInputInterface {
+    title?: string;
+    minPrice?: number;
+    maxPrice?: number;
+    take: number;
+    skip: number;
+}

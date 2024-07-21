@@ -20,7 +20,7 @@ export class AuthenticationService {
             })
         }
 
-        const isPasswordValid = bcrypt.compareSync(input.password, user.password);
+        const isPasswordValid = bcrypt.compare(input.password, user.password);
 
         if (!isPasswordValid) {
             return res.status(401).json({

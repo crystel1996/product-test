@@ -14,7 +14,7 @@ export class ProductController {
         });
 
         const checkValidation = productValidation.createValidation();
-        console.log(checkValidation);
+     
         if (!checkValidation?.isValid) {
             return res.status(400).json({message: checkValidation.message});
         }
@@ -70,4 +70,27 @@ export class ProductController {
         return result;
 
     }
+
+    async list(req: Request, res: Response) {
+       
+        const title = req.query.title as string;
+        const minPrice = req.query.minPrice ? parseInt(req.query.minPrice as string) : undefined
+        const maxPrice = req.query.maxPrice ? parseInt(req.query.maxPrice as string) : undefined;
+        const skip = req.query.skip ? parseInt(req.query.skip as string) : 0;
+        const take = req.query.take ? parseInt(req.query.take as string) : 12;
+
+        const productService = new ProductService();
+
+        const result = await productService.list({
+            title,
+            take,
+            skip,
+            minPrice,
+            maxPrice
+        }, res);
+
+        return result;
+
+    }
+
 }

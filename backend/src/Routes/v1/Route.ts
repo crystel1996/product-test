@@ -28,6 +28,10 @@ const Routes = [
         path: '/product',
         route: productRoute.delete()
     },
+    {
+        path: '/product',
+        route: productRoute.list()
+    }
 ]
 
 Routes.forEach((route) => {

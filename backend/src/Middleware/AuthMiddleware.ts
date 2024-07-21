@@ -12,7 +12,7 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
         return next();
     }
 
-  const authHeader = req.headers["Authorization"] as string;
+  const authHeader = req.headers["authorization"] as string;
   const token = authHeader && authHeader?.startsWith("Bearer ") 
     ? authHeader?.split(" ")[1] 
     : null;
