@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { AuthenticationService } from './..//Service/Authentication/AuthenticationService';
 
 export class AuthenticationController {
@@ -13,9 +13,7 @@ export class AuthenticationController {
             password
         }, res);
 
-        return res.send({
-            token
-        });
+        return token;
     }
 
     async me(req: Request, res: Response) {

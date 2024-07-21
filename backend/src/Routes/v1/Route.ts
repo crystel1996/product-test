@@ -1,9 +1,11 @@
 import express from 'express';
 import { AuthenticationRoute } from "./AuthenticationRoute";
+import { ProductRoute } from './ProductRoute';
 
 const router = express.Router();
 
 const authenticationRoute = new AuthenticationRoute();
+const productRoute = new ProductRoute();
 
 const Routes = [
     {
@@ -13,7 +15,19 @@ const Routes = [
     {
         path: '/auth',
         route: authenticationRoute.me()
-    }
+    },
+    {
+        path: '/product',
+        route: productRoute.create()
+    },
+    {
+        path: '/product',
+        route: productRoute.update()
+    },
+    {
+        path: '/product',
+        route: productRoute.delete()
+    },
 ]
 
 Routes.forEach((route) => {

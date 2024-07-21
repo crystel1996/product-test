@@ -32,7 +32,9 @@ export class AuthenticationService {
             expiresIn: process.env.JWT_LIFETIME,
         });
 
-        return token;
+        return res.status(200).json({
+            token
+        });
 
     }
 
