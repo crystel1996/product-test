@@ -5,6 +5,7 @@ import cors from 'cors';
 import 'reflect-metadata';
 import routes from './Routes/v1/Route';
 import { isAuthenticated } from './Config/database';
+import { verifyToken } from './Middleware/AuthMiddleware';
 
 const app = express();
 
@@ -26,6 +27,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(cors());
+
+app.use(verifyToken);
 
 // api routes
 app.use('/api', routes);
