@@ -12,6 +12,7 @@ export const dataSource = new DataSource({
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
     entities: MODEL,
+    synchronize: true //only for dev environment, not for production
 })
 
 export const isAuthenticated = async () => {

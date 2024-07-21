@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import cors from 'cors';
+import 'reflect-metadata';
 import routes from './Routes/v1/Route';
 import { isAuthenticated } from './Config/database';
 

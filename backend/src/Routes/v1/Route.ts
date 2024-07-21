@@ -9,6 +9,10 @@ const Routes = [
     {
         path: '/auth',
         route: authenticationRoute.login()
+    },
+    {
+        path: '/auth',
+        route: authenticationRoute.me()
     }
 ]
 
