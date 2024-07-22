@@ -7,11 +7,13 @@ import { Title } from "../../../Components/Title";
 const HeaderList: string[] = ['Title', 'Description', 'Prix', 'Action']
 
 export const ProductListPage: FC<ProductListInterface> = () => {
-    return <div className="px-2">
+    return <>
         <Header />
-        <Title title="Liste de vos produits" subtitle="Consultez et gérez les niveaux de stock de vos produits." cta={{ link: "/product/add", title: "Ajouter" }} />
-        <div className="py-4">
-            <Table headerList={HeaderList} />
+        <div className="px-2">
+            <Title title="Liste de vos produits" subtitle="Consultez et gérez les niveaux de stock de vos produits." cta={{ link: "/product/add", title: "Ajouter" }} />
+            <div className="py-4">
+                <Table headerList={HeaderList} />
+            </div>
         </div>
-    </div>
+    </>
 }

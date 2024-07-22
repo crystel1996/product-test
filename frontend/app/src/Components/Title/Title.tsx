@@ -3,7 +3,7 @@ import { TitleComponentInterface } from "./interface";
 
 export const Title: FC<TitleComponentInterface> = (props) => {
     return  <div className="text-center">
-        <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">{props.title}</h1>
+        <h1 className="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">{props.title}</h1>
         
         {props.subtitle && (
             <p className="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">{props.subtitle}</p>
