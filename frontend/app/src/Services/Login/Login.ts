@@ -29,26 +29,37 @@ export class LoginService {
         }
     }
 
-    async ubmit() {
+    async submit() {
         const checkValidation = this.isValid();
         if(checkValidation.isValid) {
             return axios({
                 method: 'post',
-                url: `{${process.env.REACT_APP_API_URL}}`,
+                url: `${process.env.REACT_APP_API_URL}/api/auth/login`,
                 data: {
                     email: this._input?.email,
                     password: this._input?.password
                 }
             }).then((result) => {
-                SetCookies('accessToken', result.data.accessToken);
+                SetCookies('accessToken', result.data.token);
+                console.log('[RESULT]', result.data);
                 return {
-                    message: "Connexion reussi."
+                    success: true,
+                    message: "Connexion reussi.",
+                    data: result.data.token
+                }
+            }).catch((error) => {
+                return {
+                    success: false,
+                    message: error.response.data?.message,
+                    data: undefined
                 }
             })
         }
 
         return {
-            message: checkValidation.isValid
+            success: false,
+            message: checkValidation.message,
+            data: undefined,
         }
     }
 }
