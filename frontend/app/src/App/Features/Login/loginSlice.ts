@@ -13,18 +13,22 @@ const loginSlice = createSlice({
     reducers: {
         loginRequest: (state: LoginStateInterface) => {
             state.error = null;
+            return state;
         },
         loginSuccess: (state: LoginStateInterface, action) => {
             state.isAuthenticated = true;
             state.accessToken = action.payload.accessToken;
             state.error = null;
+            return state;
         },
         loginFailure: (state, action) => {
             state.error = action.payload?.message;
+            return state;
         },
         logout: (state) => {
             state.isAuthenticated = false;
             state.accessToken = null;
+            return state;
         },
     }
 });
