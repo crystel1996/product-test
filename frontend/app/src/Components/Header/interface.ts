@@ -1,3 +1,1 @@
-export interface HeaderComponentInterface {
-    isLogged?: boolean;
-}
+export interface HeaderComponentInterface {}

@@ -1,4 +1,5 @@
-import { ChangeEvent, FC, useState, FormEvent } from "react";
+import { ChangeEvent, FC, useState, FormEvent, useEffect } from "react";
+import { useLocation } from 'react-router-dom';
 import { LoginComponentInterface } from "./interface";
 import { LoginInputInterface } from "../../Services/Login/interface";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,11 +14,27 @@ const DEFAULT_INPUT: LoginInputInterface = {
 export const Login: FC<LoginComponentInterface> = () => {
     const [input, setInput] = useState<LoginInputInterface>(DEFAULT_INPUT);
     const dispatch = useDispatch();
+    const location = useLocation();
     const { error } = useSelector(({ login }: {
         login: LoginStateInterface
     }) => {
         return login;
     });
+
+    useEffect(() => {
+        const handleLoadMessage = () => {
+            const params = new URLSearchParams(location.search);
+            const action = params.get('action');
+            if (action === 'relogin') {
+                dispatch(loginFailure({
+                    message: "Vous devez d'abord reconnecter."
+                }))
+            }
+        };
+
+        handleLoadMessage()
+        
+    }, [location.search]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         e.stopPropagation();
