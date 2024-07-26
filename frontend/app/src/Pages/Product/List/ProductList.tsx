@@ -1,13 +1,12 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ProductListInterface } from "./interface";
 import { Header } from "../../../Components/Header";
 import { Table } from "../../../Components/Table";
 import { Title } from "../../../Components/Title";
 import { ProductService } from "../../../Services/Product/ProductService";
-import { addListProduct, deleteProduct, setCountProduct, setErrorProduct, setProductSelected, setProductUnselected } from "../../../App/Features/Product/ProductSlice";
+import { addListProduct, deleteProduct, setCountProduct, setErrorProduct, setProductSelected, setProductUnselected, setSuccessProduct } from "../../../App/Features/Product/ProductSlice";
 import { ProductStateInterface } from "../../../App/Features/Product/interface";
-import React from "react";
 import { Modal } from "../../../Components/Modal";
 
 const HeaderList: string[] = ['Title', 'Description', 'Prix', 'Action']
@@ -15,7 +14,7 @@ const HeaderList: string[] = ['Title', 'Description', 'Prix', 'Action']
 export const ProductListPage: FC<ProductListInterface> = () => {
 
     const dispatch = useDispatch();
-    const { items, count, delete: productToDeleted } = useSelector(({ product }: {
+    const { items, count, delete: productToDeleted, error, success } = useSelector(({ product }: {
         product: ProductStateInterface
     }) => {
         return product;
@@ -53,6 +52,7 @@ export const ProductListPage: FC<ProductListInterface> = () => {
                     id: productToDeleted.id
                 }));
                 dispatch(setProductUnselected());
+                dispatch(setSuccessProduct(deleteService.message));
                 handleFetchProduct();
             }
             if(!deleteService.isSuccess) {
@@ -63,13 +63,15 @@ export const ProductListPage: FC<ProductListInterface> = () => {
 
     const handleCloseModal = () => {
         dispatch(setProductUnselected());
+        dispatch(setErrorProduct(''));
+        dispatch(setSuccessProduct(''));
     };
 
     const handleUpdate = (id: number) => {
        window.location.href= `/product/update/${id}`;
     };
 
-    const LIST = React.useMemo(() => {
+    const LIST = useMemo(() => {
         return items.map((item)=> {
             return {
                 name: item.title,
@@ -101,6 +103,7 @@ export const ProductListPage: FC<ProductListInterface> = () => {
             open={!!productToDeleted?.open}
             onClose={handleCloseModal}
             onConfirm={handleConfirmDelete}
+            alertMessage={error  || success || undefined}
         />
     </>
 }

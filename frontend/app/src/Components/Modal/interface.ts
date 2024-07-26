@@ -5,4 +5,5 @@ export interface ModalInterface {
     open: boolean;
     onClose: () => void;
     onConfirm: () => void;
+    alertMessage?: string;
 }

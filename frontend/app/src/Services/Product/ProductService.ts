@@ -99,7 +99,7 @@ export class ProductService {
             return {
                 isSuccess: false,
                 data: undefined,
-                message: error.response.data
+                message: error.response.data.message
             }
         })
     }
