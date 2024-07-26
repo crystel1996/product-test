@@ -93,4 +93,16 @@ export class ProductController {
 
     }
 
+    async product(req: Request, res: Response) {
+        const { id } = req.body;
+
+        const productService = new ProductService();
+
+        const result = await productService.product(id, res);
+
+        return result;
+
+
+    }
+
 }

@@ -116,4 +116,24 @@ export class ProductService {
             "count": count
         });
     }
+
+    async product(id: number, res: Response) {
+        const productRepository = dataSource.getRepository(Product);
+
+        const product = await productRepository.findOne({
+            where: {
+                id
+            }
+        });
+
+        if(!product) {
+            return res.status(400).json({
+                message: "Produit introuvable."
+            });
+        }
+
+        return res.status(200).json(product);
+
+    }
+
 }

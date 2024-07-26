@@ -10,5 +10,9 @@ export const ProductRoute: RouterInterface[] = [
     {
         path: '/product/add',
         element: <ProductFormPage />
+    },
+    {
+        path: '/product/update/:id',
+        element: <ProductFormPage />
     }
 ];

@@ -43,7 +43,7 @@ export class ProductService {
     async add (input: ProductAddInputInterface) {
 
         const checkValidation = this.isValidProduct(input);
-        console.log(checkValidation)
+        
         if(checkValidation?.isValid) {
             return axios({
                 url: `${process.env.REACT_APP_API_URL}/api/product/create`,
@@ -61,6 +61,45 @@ export class ProductService {
                 return {
                     success: true,
                     message: "Produit ajouté.",
+                    data: result.data
+                }
+            }).catch((error) => {
+                console.log('[ERROR]', error.response.data);
+                return {
+                    success: false,
+                    message: error.response.data?.message,
+                    data: undefined
+                }
+            });
+        }
+        return {
+            success: false,
+            message: checkValidation.message,
+            data: undefined
+        }
+    }
+
+    async update(input: ProductAddInputInterface) {
+        const checkValidation = this.isValidProduct(input);
+        
+        if(checkValidation?.isValid) {
+            return axios({
+                url: `${process.env.REACT_APP_API_URL}/api/product/update`,
+                method: 'post',
+                data: {
+                    id: input.id,
+                    title: input.name,
+                    price: input.price,
+                    description: input.description
+                },
+                headers: {
+                    Authorization: `Bearer ${GetCookies('accessToken')}`
+                }
+            }).then((result) => {
+             
+                return {
+                    success: true,
+                    message: "Produit modifié.",
                     data: result.data
                 }
             }).catch((error) => {
@@ -122,6 +161,32 @@ export class ProductService {
             return {
                 data: [],
                 count: 0
+            }
+        });
+    }
+
+    async getProduct(id: number) {
+        return axios({
+            method: 'post',
+            url: `${process.env.REACT_APP_API_URL}/api/product/product`,
+            data: {
+                id
+            },
+            headers: {
+                Authorization: `Bearer ${GetCookies('accessToken')}`
+            }
+        }).then((result) => {
+            return {
+                data: result.data,
+                isSuccess: true,
+                message: ''
+            }
+        }).catch((error) => {
+            console.log('[ERROR]', error)
+            return {
+                data: undefined,
+                message: error.response.data.message,
+                isSuccess: false,
             }
         });
     }

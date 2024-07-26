@@ -31,6 +31,10 @@ const Routes = [
     {
         path: '/product',
         route: productRoute.list()
+    },
+    {
+        path: '/product',
+        route: productRoute.product()
     }
 ]
 

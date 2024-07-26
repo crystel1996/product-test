@@ -1,8 +1,9 @@
-import { ChangeEvent, FC, FormEvent, useState } from "react";
+import { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 import { ProductFormInterface, ProductInputInterface } from "./interface";
 import { ProductService } from "../../Services/Product/ProductService";
-import { useDispatch, useSelector } from "react-redux";
-import { addProduct, setErrorProduct, setSuccessProduct } from "../../App/Features/Product/ProductSlice";
+import { addProduct, setErrorProduct, setSuccessProduct, updateProduct } from "../../App/Features/Product/ProductSlice";
 import { ProductStateInterface } from "../../App/Features/Product/interface";
 
 const DEFAULT_INPUT: ProductInputInterface = {
@@ -11,16 +12,28 @@ const DEFAULT_INPUT: ProductInputInterface = {
     description: ''
 }
 
-export const ProductForm: FC<ProductFormInterface> = () => {
+export const ProductForm: FC<ProductFormInterface> = (props) => {
 
     const [input, setInput] = useState<ProductInputInterface>(DEFAULT_INPUT);
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { error, success } = useSelector(({ product }: {
         product: ProductStateInterface
     }) => {
         return product;
     });
+
+    useEffect(() => {
+        if(props.item) {
+            setInput({
+                id: props.item.id,
+                price: props.item.price,
+                description: props.item.description,
+                name: props.item.title
+            });
+        }
+    }, [props.item]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         e.stopPropagation();
@@ -35,6 +48,26 @@ export const ProductForm: FC<ProductFormInterface> = () => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const productService = new ProductService();
+
+        if(props.item && input.id) {
+            const submitUpdateProduct = await productService.update({...input, price: Number(input.price)});
+            if(submitUpdateProduct.success) {
+                dispatch(updateProduct({
+                    id: submitUpdateProduct.data.id,
+                    title: submitUpdateProduct.data.title,
+                    price: submitUpdateProduct.data.price,
+                    description: submitUpdateProduct.data.description
+                }));
+                dispatch(setSuccessProduct(submitUpdateProduct.message));
+                setInput(DEFAULT_INPUT);
+                navigate(-1);
+            }
+            if(!submitUpdateProduct.success) {
+                dispatch(setErrorProduct(submitUpdateProduct.message));
+            }
+            return;
+        }
+
         const submitCreateProduct = await productService.add({...input, price: Number(input.price)});
         if(submitCreateProduct.success) {
             dispatch(addProduct({
@@ -108,7 +141,7 @@ export const ProductForm: FC<ProductFormInterface> = () => {
                         type="submit" 
                         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     >
-                        Ajouter
+                        {props.item ? "Modifier" : "Ajouter"}
                     </button>
                 </form>
             </div>

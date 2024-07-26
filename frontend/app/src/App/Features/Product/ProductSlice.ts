@@ -19,7 +19,15 @@ const productsSlice = createSlice({
             state.items = action.payload;
         },
         deleteProduct: (state: ProductStateInterface, action: PayloadAction<{id: number}>) => {
-            state.items.filter((item) => item.id !== action.payload.id);
+            state.items = state.items.filter((item) => item.id !== action.payload.id);
+        },
+        updateProduct: (state: ProductStateInterface, action: PayloadAction<ProductInterface>) => {
+            state.items = state.items.map((item) => {
+                if(item.id === action.payload.id) {
+                    return action.payload;
+                }
+                return item;
+            })
         },
         setCountProduct: (state: ProductStateInterface, action: PayloadAction<number>) => {
             state.count = action.payload;
@@ -32,12 +40,15 @@ const productsSlice = createSlice({
             state.success = action.payload;
             state.error = ''
         },
-        setProductSelected: (state: ProductStateInterface, action: PayloadAction<{id: number; action: 'DELETE'}>) => {
+        setProductSelected: (state: ProductStateInterface, action: PayloadAction<{id: number; action: 'DELETE' | 'UPDATE', item?: ProductInterface}>) => {
             if (action.payload.action === 'DELETE') {
                 state.delete = {
                     id: action.payload.id,
                     open: true,
                 }
+            }
+            if (action.payload.action === 'UPDATE') {
+                state.item = action.payload.item;
             }
         },
         setProductUnselected: (state: ProductStateInterface) => {
@@ -49,6 +60,7 @@ const productsSlice = createSlice({
 export const { 
     addProduct, 
     deleteProduct,
+    updateProduct,
     setErrorProduct, 
     setSuccessProduct, 
     addListProduct, 

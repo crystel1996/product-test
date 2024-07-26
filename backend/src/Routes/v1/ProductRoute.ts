@@ -38,4 +38,11 @@ export class ProductRoute {
         return this._router;
     }
 
+    product () {
+        if (this._router) {
+            this._router.post('/product', this._controller.product);
+        }
+        return this._router;
+    }
+
 }

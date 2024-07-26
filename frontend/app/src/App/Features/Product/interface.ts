@@ -3,6 +3,7 @@ export interface ProductStateInterface {
     error: string;
     success: string;
     count: number;
+    item?: ProductInterface;
     delete?: {
         id: number;
         open: boolean;
