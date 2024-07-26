@@ -4,6 +4,10 @@ import { ProductListPage } from "./List";
 
 export const ProductRoute: RouterInterface[] = [
     {
+        path: '/',
+        element: <ProductListPage />
+    },
+    {
         path: '/product/list',
         element: <ProductListPage />
     },
