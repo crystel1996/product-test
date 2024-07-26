@@ -33,7 +33,14 @@ export class ProductRoute {
 
     list () {
         if (this._router) {
-            this._router.get('/list', this._controller.list);
+            this._router.post('/list', this._controller.list);
+        }
+        return this._router;
+    }
+
+    product () {
+        if (this._router) {
+            this._router.post('/product', this._controller.product);
         }
         return this._router;
     }

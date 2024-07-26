@@ -15,12 +15,12 @@ export class AuthenticationService {
         const user = await userRepository.findOneBy({ email: input.email });
 
         if (!user) {
-            return res.status(404).json({
+            return res.status(401).json({
                 message: 'Utilisateur introuvable'
             })
         }
 
-        const isPasswordValid = bcrypt.compare(input.password, user.password);
+        const isPasswordValid = await bcrypt.compare(input.password, user.password);
 
         if (!isPasswordValid) {
             return res.status(401).json({

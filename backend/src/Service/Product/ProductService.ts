@@ -2,7 +2,7 @@ import { Response } from "express";
 import { ProductCreateInputInterface, ProductListInputInterface, ProductUpdateInputInterface } from "./interface";
 import { Product } from "./../../Model/Product";
 import { dataSource } from "./../../Config/database";
-import { Between, FindOptionsWhere, ILike, LessThan, MoreThan } from "typeorm";
+import { Between, FindManyOptions, FindOptionsWhere, ILike, LessThan, MoreThan } from "typeorm";
 
 export class ProductService {
     async create(input: ProductCreateInputInterface, res: Response) {
@@ -94,16 +94,46 @@ export class ProductService {
             }
         }
 
-        const result = await productRepository.findAndCount({
+        const condition:  FindManyOptions<Product> = {
             where: {
                 ...where
             },
             skip: input.skip || 0,
             take: input.take || 12
-        });
+        };
+
+        const resultPromise =  productRepository.find(condition);
+
+        const countPromise =  productRepository.count(condition);
+
+        const [result, count] = await Promise.all([
+            await resultPromise,
+            await countPromise
+        ]);
+
         return res.status(200).json({
-            "data": result[0],
-            "count": result[1]
+            "data": result,
+            "count": count
         });
     }
+
+    async product(id: number, res: Response) {
+        const productRepository = dataSource.getRepository(Product);
+
+        const product = await productRepository.findOne({
+            where: {
+                id
+            }
+        });
+
+        if(!product) {
+            return res.status(400).json({
+                message: "Produit introuvable."
+            });
+        }
+
+        return res.status(200).json(product);
+
+    }
+
 }

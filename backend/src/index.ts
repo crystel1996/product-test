@@ -21,7 +21,7 @@ app.use(express.json());
 
 // Cors options
 const corsOptions = {
-  origin:  process.env.PORT,
+  origin:  process.env.FRONT_APP_URL,
   optionsSuccessStatus: 200 // For legacy browser support
 };
 
