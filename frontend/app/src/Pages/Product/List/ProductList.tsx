@@ -31,8 +31,8 @@ export const ProductListPage: FC<ProductListInterface> = () => {
             skip: filter.skip ? parseInt(filter.skip) : 0,
             take: filter.take ? parseInt(filter.take) : 12,
             title: filter.title ?? '',
-            minPrice: filter.minPrice ? parseInt(filter.minPrice) : 0,
-            maxPrice: filter.maxPrice ? parseInt(filter.maxPrice) : 12,
+            minPrice: filter.minPrice ? parseInt(filter.minPrice) : undefined,
+            maxPrice: filter.maxPrice ? parseInt(filter.maxPrice) : undefined,
         });
         dispatch(addListProduct(products.data));
         dispatch(setCountProduct(products.count));
@@ -122,6 +122,8 @@ export const ProductListPage: FC<ProductListInterface> = () => {
                     headerList={HeaderList} 
                     items={LIST}
                     count={count}
+                    skip={skip ? parseInt(skip) : 0}
+                    take={take ? parseInt(take) : 12}
                     onDelete={handleDelete}
                     onUpdate={handleUpdate}
                 />

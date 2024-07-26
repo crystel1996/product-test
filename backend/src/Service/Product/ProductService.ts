@@ -2,7 +2,7 @@ import { Response } from "express";
 import { ProductCreateInputInterface, ProductListInputInterface, ProductUpdateInputInterface } from "./interface";
 import { Product } from "./../../Model/Product";
 import { dataSource } from "./../../Config/database";
-import { Between, FindOptionsWhere, ILike, LessThan, MoreThan } from "typeorm";
+import { Between, FindManyOptions, FindOptionsWhere, ILike, LessThan, MoreThan } from "typeorm";
 
 export class ProductService {
     async create(input: ProductCreateInputInterface, res: Response) {
@@ -94,7 +94,7 @@ export class ProductService {
             }
         }
 
-        const condition = {
+        const condition:  FindManyOptions<Product> = {
             where: {
                 ...where
             },

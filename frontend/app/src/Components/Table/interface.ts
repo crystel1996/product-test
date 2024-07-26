@@ -11,4 +11,6 @@ export interface TableComponentInterface {
     count: number;
     onDelete:  (id: number) => void;
     onUpdate: (id: number) => void;
+    skip?: number;
+    take?: number;
 }
