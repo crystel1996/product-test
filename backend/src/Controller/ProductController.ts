@@ -73,11 +73,11 @@ export class ProductController {
 
     async list(req: Request, res: Response) {
        
-        const title = req.query.title as string;
-        const minPrice = req.query.minPrice ? parseInt(req.query.minPrice as string) : undefined
-        const maxPrice = req.query.maxPrice ? parseInt(req.query.maxPrice as string) : undefined;
-        const skip = req.query.skip ? parseInt(req.query.skip as string) : 0;
-        const take = req.query.take ? parseInt(req.query.take as string) : 12;
+        const title = req.body.title as string;
+        const minPrice = req.body.minPrice ? parseInt(req.query.minPrice as string) : undefined
+        const maxPrice = req.body.maxPrice ? parseInt(req.query.maxPrice as string) : undefined;
+        const skip = req.body.skip ? parseInt(req.query.skip as string) : 0;
+        const take = req.body.take ? parseInt(req.query.take as string) : 12;
 
         const productService = new ProductService();
 

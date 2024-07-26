@@ -1,6 +1,7 @@
 import { FC, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ProductListInterface } from "./interface";
+import { useLocation } from "react-router-dom";
+import { ProductFilterInterface, ProductListInterface } from "./interface";
 import { Header } from "../../../Components/Header";
 import { Table } from "../../../Components/Table";
 import { Title } from "../../../Components/Title";
@@ -8,6 +9,7 @@ import { ProductService } from "../../../Services/Product/ProductService";
 import { addListProduct, deleteProduct, setCountProduct, setErrorProduct, setProductSelected, setProductUnselected, setSuccessProduct } from "../../../App/Features/Product/ProductSlice";
 import { ProductStateInterface } from "../../../App/Features/Product/interface";
 import { Modal } from "../../../Components/Modal";
+import { SearchForm } from "../../../Components/SearchForm";
 
 const HeaderList: string[] = ['Title', 'Description', 'Prix', 'Action']
 
@@ -20,21 +22,41 @@ export const ProductListPage: FC<ProductListInterface> = () => {
         return product;
     });
 
-    const handleFetchProduct = async () => {
+    const location = useLocation(); 
+    const queryParams = new URLSearchParams(location.search);
+
+    const handleFetchProduct = async (filter: ProductFilterInterface) => {
         const productService = new ProductService();
         const products = await productService.list({
-            skip: 0,
-            take: 12
+            skip: filter.skip ? parseInt(filter.skip) : 0,
+            take: filter.take ? parseInt(filter.take) : 12,
+            title: filter.title ?? '',
+            minPrice: filter.minPrice ? parseInt(filter.minPrice) : 0,
+            maxPrice: filter.maxPrice ? parseInt(filter.maxPrice) : 12,
         });
         dispatch(addListProduct(products.data));
         dispatch(setCountProduct(products.count));
     }
 
-    useEffect(() => {
-        handleFetchProduct();
-    }, []);
+    const { title, skip, take, minPrice, maxPrice } = useMemo(() => {
+        return {
+            title: queryParams.get('q'),
+            skip: queryParams.get('skip'),
+            take: queryParams.get('take'),
+            minPrice: queryParams.get('minPrice'),
+            maxPrice: queryParams.get('maxPrice')
+        }
+    }, [queryParams]);
 
-    
+    useEffect(() => {
+        handleFetchProduct({
+            title, skip, take, minPrice, maxPrice
+        });
+    }, [title, skip, take, minPrice, maxPrice]);
+
+    const handleSearch = (search: string) => {
+        window.location.href = `/product/list?q=${search}`;
+    };
 
     const handleDelete = (id: number) => {
         dispatch(setProductSelected({
@@ -53,7 +75,13 @@ export const ProductListPage: FC<ProductListInterface> = () => {
                 }));
                 dispatch(setProductUnselected());
                 dispatch(setSuccessProduct(deleteService.message));
-                handleFetchProduct();
+                handleFetchProduct({
+                    title,
+                    skip,
+                    take,
+                    minPrice,
+                    maxPrice 
+                });
             }
             if(!deleteService.isSuccess) {
                 dispatch(setErrorProduct(deleteService.message));
@@ -86,6 +114,9 @@ export const ProductListPage: FC<ProductListInterface> = () => {
         <Header />
         <div className="px-2">
             <Title title="Liste de vos produits" subtitle="Consultez et gérez les niveaux de stock de vos produits." cta={{ link: "/product/add", title: "Ajouter" }} />
+            <div className="flex justify-end p-4">
+                <SearchForm onSearch={handleSearch} value={title}/>
+            </div>
             <div className="py-4">
                 <Table 
                     headerList={HeaderList} 

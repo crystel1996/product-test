@@ -145,7 +145,7 @@ export class ProductService {
 
     async list(input: ProductListInputInterface) {
         return axios({
-            method: 'get',
+            method: 'post',
             url: `${process.env.REACT_APP_API_URL}/api/product/list`,
             data: input,
             headers: {
