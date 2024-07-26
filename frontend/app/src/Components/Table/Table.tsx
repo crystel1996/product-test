@@ -1,7 +1,18 @@
-import { FC } from "react";
+import { FC, MouseEvent } from "react";
 import { TableComponentInterface } from "./interface";
 
 export const Table: FC<TableComponentInterface> = (props) => {
+
+    const handleUpdate = (event: MouseEvent<HTMLElement>, id: number) => {
+        event.stopPropagation();
+        props.onUpdate(id)
+    };
+
+    const handleDelete = (event: MouseEvent<HTMLElement>, id: number) => {
+        event.stopPropagation();
+        props.onDelete(id)
+    };
+
     return <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -14,21 +25,23 @@ export const Table: FC<TableComponentInterface> = (props) => {
             </tr>
         </thead>
         <tbody>
-            <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Apple MacBook Pro 17"
-                </th>
-                <td className="px-6 py-4">
-                    Laptop
-                </td>
-                <td className="px-6 py-4">
-                    $2999
-                </td>
-                <td className="px-6 py-4">
-                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                    <a href="#" className="px-1 font-medium text-red-600 dark:text-blue-500 hover:underline">Supprimer</a>
-                </td>
-            </tr>
+            {props.items.map((item, index) => {
+                return  <tr key={`${index}-table`}className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {item.name}
+                            </th>
+                            <td className="px-6 py-4">
+                                {item.description}
+                            </td>
+                            <td className="px-6 py-4">
+                                $ {item.price}
+                            </td>
+                            <td className="px-6 py-4">
+                                <a href="javascript:void(0)" onClick={(e) => handleUpdate(e, item.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                <a href="javascript:void(0)" onClick={(e) => handleDelete(e, item.id)} className="px-1 font-medium text-red-600 dark:text-blue-500 hover:underline">Supprimer</a>
+                            </td>
+                        </tr>
+            })}
         </tbody>
     </table>
     <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">

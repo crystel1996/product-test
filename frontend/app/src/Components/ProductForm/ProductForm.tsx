@@ -37,9 +37,9 @@ export const ProductForm: FC<ProductFormInterface> = () => {
         const productService = new ProductService();
         const submitCreateProduct = await productService.add({...input, price: Number(input.price)});
         if(submitCreateProduct.success) {
-            console.log(submitCreateProduct)
             dispatch(addProduct({
-                name: submitCreateProduct.data.title,
+                id: submitCreateProduct.data.id,
+                title: submitCreateProduct.data.title,
                 price: submitCreateProduct.data.price,
                 description: submitCreateProduct.data.description
             }));

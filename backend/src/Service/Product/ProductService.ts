@@ -94,16 +94,26 @@ export class ProductService {
             }
         }
 
-        const result = await productRepository.findAndCount({
+        const condition = {
             where: {
                 ...where
             },
             skip: input.skip || 0,
             take: input.take || 12
-        });
+        };
+
+        const resultPromise =  productRepository.find(condition);
+
+        const countPromise =  productRepository.count(condition);
+
+        const [result, count] = await Promise.all([
+            await resultPromise,
+            await countPromise
+        ]);
+
         return res.status(200).json({
-            "data": result[0],
-            "count": result[1]
+            "data": result,
+            "count": count
         });
     }
 }

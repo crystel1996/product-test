@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ProductAddInputInterface } from "./interface";
+import { ProductAddInputInterface, ProductListInputInterface } from "./interface";
 import { GetCookies } from "../Session/Cookies";
 
 export class ProductService {
@@ -77,6 +77,53 @@ export class ProductService {
             message: checkValidation.message,
             data: undefined
         }
+    }
+
+    async delete(id: number) {
+        return axios({
+            method: 'post',
+            url: `${process.env.REACT_APP_API_URL}/api/product/delete`,
+            data: {
+                id
+            },
+            headers: {
+                Authorization: `Bearer ${GetCookies('accessToken')}`
+            }
+        }).then((result) => {
+            return {
+                isSuccess: true,
+                data: result.data,
+                message: "Produit supprimé"
+            }
+        }).catch((error) => {
+            return {
+                isSuccess: false,
+                data: undefined,
+                message: error.response.data
+            }
+        })
+    }
+
+    async list(input: ProductListInputInterface) {
+        return axios({
+            method: 'get',
+            url: `${process.env.REACT_APP_API_URL}/api/product/list`,
+            data: input,
+            headers: {
+                Authorization: `Bearer ${GetCookies('accessToken')}`
+            }
+        }).then((result) => {
+            return {
+                data: result.data.data,
+                count: result.data.count
+            }
+        }).catch((error) => {
+            console.log('[ERROR]', error)
+            return {
+                data: [],
+                count: 0
+            }
+        });
     }
 
 }
