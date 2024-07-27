@@ -13,9 +13,6 @@ export const dataSource = new DataSource({
     database: process.env.DATABASE_NAME,
     entities: [__dirname + '/dist/**/*.entity.{js,ts}'],
     synchronize: true, //only for dev environment, not for production,
-    extra: {
-        ssl: true
-    }
 })
 
 export const isAuthenticated = async () => {
