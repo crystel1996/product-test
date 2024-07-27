@@ -17,6 +17,13 @@ export class AuthenticationRoute {
         return this._router;
     }
 
+    register () {
+        if (this._router) {
+            this._router.post('/register', this._controller.register);
+        }
+        return this._router;
+    }
+
     me () {
         if (this._router) {
             this._router.post('/me', this._controller.me);

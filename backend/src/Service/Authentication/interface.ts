@@ -6,3 +6,8 @@ export interface LoginInputInterface {
 export interface MeInputInterface {
     accessToken: string;
 }
+
+export interface RegisterInputInterface {
+    email: string;
+    password: string;
+}

@@ -14,6 +14,10 @@ const Routes = [
     },
     {
         path: '/auth',
+        route: authenticationRoute.register()
+    },
+    {
+        path: '/auth',
         route: authenticationRoute.me()
     },
     {

@@ -8,8 +8,8 @@ const secretKey = process.env.JWT_SECRET_KEY; // Replace with your actual secret
 
 export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
 
-    if (req.path === '/api/auth/login' || req.path === '/api/auth/me') {
-        return next();
+    if (['/api/auth/login', '/api/auth/me', '/api/auth/register'].includes(req.path)) {
+      return next();
     }
 
   const authHeader = req.headers["authorization"] as string;
