@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { ProductCreateInputInterface, ProductListInputInterface, ProductUpdateInputInterface } from "./interface";
-import { Product } from "./../../Model/Product";
+import { Product } from "../../Model/Product.entity";
 import { dataSource } from "./../../Config/database";
 import { Between, FindManyOptions, FindOptionsWhere, ILike, LessThan, MoreThan } from "typeorm";
 

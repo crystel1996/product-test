@@ -1,6 +1,6 @@
 import { dataSource } from "./../../Config/database";
 import { ProductValidationInputInterface } from "./interface";
-import { Product } from "./../../Model/Product";
+import { Product } from "../../Model/Product.entity";
 
 export class ProductValidation {
 

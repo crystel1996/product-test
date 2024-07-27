@@ -4,7 +4,7 @@ import * as jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { dataSource } from "./../../Config/database";
 import { LoginInputInterface, MeInputInterface, RegisterInputInterface } from "./interface";
-import { User } from "./../../Model/User";
+import { User } from "../../Model/User.entity";
 
 dotenv.config();
 

@@ -11,7 +11,7 @@ export const dataSource = new DataSource({
     username: process.env.DATABASE_USERNAME,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
-    entities: MODEL,
+    entities: [__dirname + '/dist/**/*.entity.{js,ts}'],
     synchronize: true //only for dev environment, not for production
 })
 
