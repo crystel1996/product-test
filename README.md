@@ -5,7 +5,6 @@ It is an application to manage product.
 ## Table of Contents
 
 - [Installation](#installation)
-- [Live preview](#livepreview)
 
 
 ## Installation
@@ -37,9 +36,3 @@ Instructions on how to install and set up the project.
   -  Copy the all key from the env-sample file to .env file and fill its values
   -  Create your postgresql database
   -  Run npm run start
-
-## Live Preview
-[https://product-test.vercel.app/](https://product-test.vercel.app/) <br />
-Account to test:
-email: admin@admin.com
-mdp: admin
